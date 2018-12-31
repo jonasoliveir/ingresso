@@ -11,8 +11,8 @@
 
         public DateTime FimEmCartaz { get; set; }
 
-        public List<Sessao> Sessoes { get; set; }
+        public List<SessaoDTO> Sessoes { get; set; }
 
-        public List<Sala> Salas { get; set; }
+        public List<SalaDTO> Salas { get; set; }
     }
 }

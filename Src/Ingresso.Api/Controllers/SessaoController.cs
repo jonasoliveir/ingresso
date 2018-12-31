@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ingresso.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/sessoes")]
     [ApiController]
     public class SessaoController : ControllerBase
     {
