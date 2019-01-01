@@ -14,5 +14,7 @@
         public List<SessaoDTO> Sessoes { get; set; }
 
         public List<SalaDTO> Salas { get; set; }
+
+        public string Id { get; set; }
     }
 }
