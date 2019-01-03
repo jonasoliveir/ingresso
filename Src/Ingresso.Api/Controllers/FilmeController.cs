@@ -27,7 +27,7 @@ namespace Ingresso.Api.Controllers
         }
 
         // GET: api/Filme/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetFilme")]
         public async Task<ActionResult<FilmeDTO>> Get(string id)
         {
             var filme = await filmeService.GetFilmeByIdAsync(id);

@@ -28,7 +28,7 @@ namespace Ingresso.Api.Controllers
         }
 
         // GET: api/sessao/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetSessao")]
         public ActionResult<SessaoDTO> Get(string id)
         {
             var sessao = sessaoService.GetSessaoById(id);

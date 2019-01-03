@@ -28,7 +28,7 @@ namespace Ingresso.Api.Controllers
         }
 
         // GET: api/Filme/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetCinema")]
         public ActionResult<CinemaDTO> Get(string id)
         {
             var cinema = cinemaService.GetFilmeById(id);
