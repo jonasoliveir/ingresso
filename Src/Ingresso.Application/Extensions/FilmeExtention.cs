@@ -2,7 +2,7 @@
 {
     using global::Application.DTO;
     using Ingresso.Domain;
-    using MongoDB.Bson;
+    using System.Collections.Generic;
 
     public static class FilmeExtention
     {
@@ -22,9 +22,26 @@
                 Descricao = filme.Descricao,
                 Genero = filme.Genero,
                 Diretor = filme.Diretor,
+                Atores = MapAtoresToDto(filme.Atores),
             };
         }
 
+        private static IEnumerable<AtorDto> MapAtoresToDto(IEnumerable<Ator> atores)
+        {
+            if (atores == null)
+            {
+                yield break;
+            }
+
+            foreach (var item in atores)
+            {
+                yield return new AtorDto
+                {
+                    Nome = item.Nome,
+                    Sexo = item.Sexo,
+                };
+            }
+        }
 
         public static Filme MapToModel(this FilmeDTO filme)
         {
@@ -36,8 +53,26 @@
                 Descricao = filme.Descricao,
                 Genero = filme.Genero,
                 Diretor = filme.Diretor,
+                Atores = MapAtoresToModel(filme.Atores),
             };
             return f;
+        }
+
+        private static IEnumerable<Ator> MapAtoresToModel(IEnumerable<AtorDto> atores)
+        {
+            if (atores == null)
+            {
+                yield break;
+            }
+
+            foreach (var item in atores)
+            {
+                yield return new Ator
+                {
+                    Nome = item.Nome,
+                    Sexo = item.Sexo,
+                };
+            }
         }
 
         public static Filme MapToNewValues(this Filme currentValue, FilmeDTO newValue)
@@ -48,7 +83,7 @@
             currentValue.Descricao = currentValue.Descricao;
             currentValue.Genero = currentValue.Genero;
             currentValue.Diretor = currentValue.Diretor;
-
+            currentValue.Atores = MapAtoresToModel(newValue.Atores);
             return currentValue;
         }
     }

@@ -17,11 +17,11 @@
 
         public string Genero { get; set; }
 
-        public List<AtorDto> Atores { get; set; }
+        public IEnumerable<AtorDto> Atores { get; set; }
 
-        public List<SessaoDTO> Sessoes { get; set; }
+        public IEnumerable<SessaoDTO> Sessoes { get; set; }
 
-        public List<SalaDTO> Salas { get; set; }
+        public IEnumerable<SalaDTO> Salas { get; set; }
 
         public string Id { get; set; }
     }

@@ -29,7 +29,7 @@
         public string Genero { get; set; }
 
         [BsonElement]
-        public List<Ator> Atores { get; set; }
+        public IEnumerable<Ator> Atores { get; set; }
 
         //public List<SessaoDTO> Sessoes { get; set; }
 
