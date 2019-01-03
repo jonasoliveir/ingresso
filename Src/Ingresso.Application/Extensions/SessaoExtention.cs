@@ -14,12 +14,12 @@
             }
 
             return new SessaoDTO
-            {
-                
+            {                
                 Id = sessao.Id.ToString(),
                 Data = sessao.Data,
                 QtLugar = sessao.QtLugar,
-                Valor = sessao.Valor
+                Valor = sessao.Valor,
+                FilmeId = sessao.FilmeId?.Id.ToString(),
             };
         }
 
@@ -30,7 +30,7 @@
             {
                 Data = sessao.Data,
                 QtLugar = sessao.QtLugar,
-                Valor = sessao.Valor
+                Valor = sessao.Valor,
             };
 
             if (setId)

@@ -15,9 +15,16 @@
     {
         private readonly ISessaoRepository sessaoRepository;
 
-        public SessaoService(ISessaoRepository sessaoRepository)
+        private readonly IFilmeRepository filmeRepository;
+
+        private readonly ISalaRepository salaRepository;
+
+
+        public SessaoService(ISessaoRepository sessaoRepository, IFilmeRepository filmeRepository, ISalaRepository salaRepository)
         {
             this.sessaoRepository = sessaoRepository;
+            this.filmeRepository = filmeRepository;
+            this.salaRepository = salaRepository;
         }
 
         public async Task<IEnumerable<SessaoDTO>> GetAllAsync()
@@ -44,6 +51,10 @@
         public async Task<SessaoDTO> CreateAsync(SessaoDTO SessaoDTO)
         {
             var sessao = SessaoDTO.MapToModel();
+
+            var filme = await filmeRepository.GetFilmeAsync(SessaoDTO.FilmeId).ConfigureAwait(false);
+
+            sessao.FilmeId = new MongoDBRef("Filme", filme.Id);
 
             await sessaoRepository.AddSessaoAsync(sessao);
 

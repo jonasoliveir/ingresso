@@ -15,9 +15,12 @@ namespace Ingresso.Api.Controllers
     {
         private readonly ISessaoService sessaoService;
 
-        public SessaoController(ISessaoService sessaoService)
+        private readonly IFilmeService filmeService;
+
+        public SessaoController(ISessaoService sessaoService, IFilmeService filmeService)
         {
             this.sessaoService = sessaoService;
+            this.filmeService = filmeService;
         }
 
         // GET: api/sessao
@@ -45,6 +48,18 @@ namespace Ingresso.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<SessaoDTO>> PostAsync([FromBody] SessaoDTO sessao)
         {
+            if (string.IsNullOrEmpty(sessao.FilmeId))
+            {
+                return BadRequest("O Identificar do filme deve ser informado.");
+            }
+
+            var filme = this.filmeService.GetFilmeByIdAsync(sessao.FilmeId);
+
+            if (filme == null)
+            {
+                return BadRequest("O filme não existente.");
+            }
+
             var createdsessao = await sessaoService.CreateAsync(sessao);
 
             return CreatedAtRoute("GetSessao", new { createdsessao.Id }, createdsessao);

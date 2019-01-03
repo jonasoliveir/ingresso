@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,8 @@ namespace Ingresso.Domain
         public int QtLugar { get; set; }
 
         [BsonElement("Valor")]
-        public decimal Valor { get; set; }         
+        public decimal Valor { get; set; }
+
+        public MongoDBRef FilmeId { get; set; }
     }
 }

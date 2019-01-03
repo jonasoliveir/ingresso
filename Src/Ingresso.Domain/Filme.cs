@@ -31,8 +31,5 @@
         [BsonElement]
         public IEnumerable<Ator> Atores { get; set; }
 
-        //public List<SessaoDTO> Sessoes { get; set; }
-
-        //public List<SalaDTO> Salas { get; set; }
     }
 }
