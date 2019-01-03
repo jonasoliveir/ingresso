@@ -23,5 +23,21 @@
                 return _database.GetCollection<Filme>("Filmes");
             }
         }
+
+        public IMongoCollection<Sala> Salas
+        {
+            get
+            {
+                return _database.GetCollection<Sala>("Salas");
+            }
+        }
+
+        public IMongoCollection<Sessao> Sessoes
+        {
+            get
+            {
+                return _database.GetCollection<Sessao>("Sessoes");
+            }
+        }
     }
 }

@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Application.DTO;
 
 namespace Ingresso.Application.Interfaces
 {
     public interface ISessaoService
     {
-        IEnumerable<SessaoDTO> GetAll();
+        Task<IEnumerable<SessaoDTO>> GetAllAsync();
 
-        SessaoDTO GetSessaoById(string Id);
+        Task<SessaoDTO> GetSessaoByIdAsync(string Id);
 
-        SessaoDTO Create(SessaoDTO sessaoDto);
+        Task<SessaoDTO> CreateAsync(SessaoDTO sessaoDto);
 
-        void Update(string Id, SessaoDTO sessaoDto);
+        Task<bool> UpdateAsync(string Id, SessaoDTO sessaoDto);
 
-        void Remove(string Id);
+        Task<bool> RemoveAsync(string Id);
     }
 }

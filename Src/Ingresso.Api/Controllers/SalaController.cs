@@ -22,62 +22,62 @@ namespace Ingresso.Api.Controllers
 
         // GET: api/sala
         [HttpGet]
-        public IEnumerable<SalaDTO> Get()
+        public async Task<IEnumerable<SalaDTO>> Get()
         {
-            return salaService.GetAll();
+            return await salaService.GetAllAsync().ConfigureAwait(false);
         }
 
         // GET: api/sala/5
         [HttpGet("{id}", Name = "GetSala")]
-        public ActionResult<SalaDTO> Get(string id)
+        public async Task<ActionResult<SalaDTO>> Get(string id)
         {
-            var sala = salaService.GetSalaById(id);
+            var sessao = await salaService.GetSalaByIdAsync(id);
 
-            if (sala == null)
+            if (sessao == null)
             {
                 return NotFound();
             }
 
-            return sala;
+            return sessao;
         }
 
         // POST: api/sala
         [HttpPost]
-        public ActionResult<SalaDTO> Post([FromBody] SalaDTO sala)
+        public async Task<ActionResult<SalaDTO>> PostAsync([FromBody] SalaDTO sala)
         {
-            var createdsala = salaService.Create(sala);
+            var createdsala = await salaService.CreateAsync(sala);
 
             return CreatedAtRoute("Get", new { createdsala.Id }, createdsala);
         }
 
         // PUT: api/sala/5
         [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromBody] SalaDTO salaToUpdate)
+        public async Task<ActionResult> PutAsync(string id, [FromBody] SalaDTO salaToUpdate)
         {
-            var sala = salaService.GetSalaById(id);
+            var sala = await salaService.GetSalaByIdAsync(id);
 
             if (sala == null)
             {
                 return NotFound();
             }
 
-            salaService.Update(id, salaToUpdate);
+            await salaService.UpdateAsync(id, salaToUpdate);
 
             return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
-            var sala = salaService.GetSalaById(id);
+            var sala = await salaService.GetSalaByIdAsync(id);
 
             if (sala == null)
             {
                 return NotFound();
             }
 
-            salaService.Remove(id);
+            await salaService.RemoveAsync(id);
 
             return NoContent();
         }

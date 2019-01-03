@@ -3,59 +3,65 @@
     using global::Application.DTO;
     using Ingresso.Application.Extensions;
     using Ingresso.Application.Interfaces;
+    using Ingresso.Data.Interfaces;
     using Ingresso.Domain;
     using Microsoft.Extensions.Configuration;
     using MongoDB.Bson;
     using MongoDB.Driver;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public class SessaoService : BaseService, ISessaoService
+    public class SessaoService : ISessaoService
     {
-        private readonly IMongoCollection<Sessao> sessaoRepository;
+        private readonly ISessaoRepository sessaoRepository;
 
-        public SessaoService(IConfiguration config) : base(config)
+        public SessaoService(ISessaoRepository sessaoRepository)
         {
-            sessaoRepository = base.DataBase.GetCollection<Sessao>("Sessoes");
+            this.sessaoRepository = sessaoRepository;
         }
 
-        public IEnumerable<SessaoDTO> GetAll()
+        public async Task<IEnumerable<SessaoDTO>> GetAllAsync()
         {
-            var result = sessaoRepository.Find(filter => true).ToEnumerable();
+            var result = await sessaoRepository.GetAllSessoesAsync().ConfigureAwait(false);
+
+            var mappedFilmes = new List<SessaoDTO>();
 
             foreach (var item in result)
             {
-                yield return item.MapToDto();
+                mappedFilmes.Add(item.MapToDto());
             }
+
+            return mappedFilmes;
         }
 
-        public SessaoDTO GetSessaoById(string Id)
+        public async Task<SessaoDTO> GetSessaoByIdAsync(string Id)
         {
-            var docId = new ObjectId(Id);
-
-            var result = sessaoRepository.Find(f => f.Id == docId).FirstOrDefault();
+            var result = await sessaoRepository.GetSessaoAsync(Id);
 
             return result.MapToDto();
         }
 
-        public SessaoDTO Create(SessaoDTO sessaoDto)
+        public async Task<SessaoDTO> CreateAsync(SessaoDTO SessaoDTO)
         {
-            var sessao = sessaoDto.MapToModel();
+            var sessao = SessaoDTO.MapToModel();
 
-            sessaoRepository.InsertOne(sessao);
+            await sessaoRepository.AddSessaoAsync(sessao);
 
             return sessao.MapToDto();
         }
 
-        public void Update(string Id, SessaoDTO sessaoDto)
+        public async Task<bool> UpdateAsync(string Id, SessaoDTO SessaoDTO)
         {
-            var sessao = sessaoDto.MapToModel(true);
+            var currentSessao = await sessaoRepository.GetSessaoAsync(Id);
 
-            sessaoRepository.ReplaceOne(f => f.Id == sessao.Id, sessao);
+            currentSessao.MapToNewValues(SessaoDTO);
+
+            return await sessaoRepository.UpdateSessaoAsync(Id, currentSessao);
         }
 
-        public void Remove(string Id)
+        public async Task<bool> RemoveAsync(string Id)
         {
-            sessaoRepository.DeleteOne(f => f.Id == new ObjectId(Id));
+            return await sessaoRepository.RemoveSessaoAsync(Id);
         }
     }
 }

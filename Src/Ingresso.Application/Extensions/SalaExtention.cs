@@ -37,5 +37,13 @@
 
             return f;
         }
+
+        public static Sala MapToNewValues(this Sala currentValue, SalaDTO newValue)
+        {
+            currentValue.Nome = newValue.Nome;
+            currentValue.Cinema = newValue.Cinema;
+
+            return currentValue;
+        }
     }
 }

@@ -22,16 +22,16 @@ namespace Ingresso.Api.Controllers
 
         // GET: api/sessao
         [HttpGet]
-        public IEnumerable<SessaoDTO> Get()
+        public async Task<IEnumerable<SessaoDTO>> Get()
         {
-            return sessaoService.GetAll();
+            return await sessaoService.GetAllAsync().ConfigureAwait(false);
         }
 
         // GET: api/sessao/5
         [HttpGet("{id}", Name = "GetSessao")]
-        public ActionResult<SessaoDTO> Get(string id)
+        public async Task<ActionResult<SessaoDTO>> Get(string id)
         {
-            var sessao = sessaoService.GetSessaoById(id);
+            var sessao = await sessaoService.GetSessaoByIdAsync(id);
 
             if (sessao == null)
             {
@@ -43,41 +43,41 @@ namespace Ingresso.Api.Controllers
 
         // POST: api/sessao
         [HttpPost]
-        public ActionResult<SessaoDTO> Post([FromBody] SessaoDTO sessao)
+        public async Task<ActionResult<SessaoDTO>> PostAsync([FromBody] SessaoDTO sessao)
         {
-            var createdsessao = sessaoService.Create(sessao);
+            var createdsessao = await sessaoService.CreateAsync(sessao);
 
             return CreatedAtRoute("Get", new { createdsessao.Id }, createdsessao);
         }
 
         // PUT: api/sessao/5
         [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromBody] SessaoDTO sessaoToUpdate)
+        public async Task<ActionResult> PutAsync(string id, [FromBody] SessaoDTO sessaoToUpdate)
         {
-            var sessao = sessaoService.GetSessaoById(id);
+            var sessao = await sessaoService.GetSessaoByIdAsync(id);
 
             if (sessao == null)
             {
                 return NotFound();
             }
 
-            sessaoService.Update(id, sessaoToUpdate);
+            await sessaoService.UpdateAsync(id, sessaoToUpdate);
 
             return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
-            var sessao = sessaoService.GetSessaoById(id);
+            var sessao = await sessaoService.GetSessaoByIdAsync(id);
 
             if (sessao == null)
             {
                 return NotFound();
             }
 
-            sessaoService.Remove(id);
+            await sessaoService.RemoveAsync(id);
 
             return NoContent();
         }

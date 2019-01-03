@@ -3,60 +3,66 @@
     using global::Application.DTO;
     using Ingresso.Application.Extensions;
     using Ingresso.Application.Interfaces;
+    using Ingresso.Data.Interfaces;
+    using Ingresso.Data.Repositories;
     using Ingresso.Domain;
     using Microsoft.Extensions.Configuration;
     using MongoDB.Bson;
     using MongoDB.Driver;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public class SalaService : BaseService, ISalaService
+    public class SalaService : ISalaService
     {
-        private readonly IMongoCollection<Sala> salaRepository;
+        private readonly ISalaRepository salaRepository;
 
-        public SalaService(IConfiguration config) : base(config)
+        public SalaService(ISalaRepository salaRepository)
         {
-            salaRepository = base.DataBase.GetCollection<Sala>("Salas");
+            this.salaRepository = salaRepository;
         }
-        
-        public SalaDTO GetSalaById(string Id)
-        {
-            var docId = new ObjectId(Id);
 
-            var result = salaRepository.Find(f => f.Id == docId).FirstOrDefault();
+        public async Task<IEnumerable<SalaDTO>> GetAllAsync()
+        {
+            var result = await salaRepository.GetAllSalasAsync().ConfigureAwait(false);
+
+            var mappedFilmes = new List<SalaDTO>();
+
+            foreach (var item in result)
+            {
+                mappedFilmes.Add(item.MapToDto());
+            }
+
+            return mappedFilmes;
+        }
+
+        public async Task<SalaDTO> GetSalaByIdAsync(string Id)
+        {
+            var result = await salaRepository.GetSalaAsync(Id);
 
             return result.MapToDto();
         }
 
-        public IEnumerable<SalaDTO> GetAll()
-        {
-            var result = salaRepository.Find(filter => true).ToEnumerable();
-
-            foreach (var item in result)
-            {
-                yield return item.MapToDto();
-            }
-        }
-
-        public SalaDTO Create(SalaDTO salaDto)
+        public async Task<SalaDTO> CreateAsync(SalaDTO salaDto)
         {
             var sala = salaDto.MapToModel();
 
-            salaRepository.InsertOne(sala);
+            await salaRepository.AddSalaAsync(sala);
 
             return sala.MapToDto();
         }
 
-
-        public void Update(string Id, SalaDTO salaDto)
+        public async Task<bool> UpdateAsync(string Id, SalaDTO salaDto)
         {
-            var sala = salaDto.MapToModel(true);
+            var currentSala = await salaRepository.GetSalaAsync(Id);
 
-            salaRepository.ReplaceOne(f => f.Id == sala.Id, sala);
+            currentSala.MapToNewValues(salaDto);
+
+            return await salaRepository.UpdateSalaAsync(Id, currentSala);
         }
 
-        public void Remove(string Id)
+        public async Task<bool> RemoveAsync(string Id)
         {
-            salaRepository.DeleteOne(f => f.Id == new ObjectId(Id));
+            return await salaRepository.RemoveSalaAsync(Id);
         }
     }
 }

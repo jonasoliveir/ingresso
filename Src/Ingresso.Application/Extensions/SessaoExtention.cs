@@ -40,5 +40,14 @@
 
             return f;
         }
+
+        public static Sessao MapToNewValues(this Sessao currentValue, SessaoDTO newValue)
+        {
+            currentValue.Data = newValue.Data;
+            currentValue.QtLugar = newValue.QtLugar;
+            currentValue.Valor = newValue.Valor;
+
+            return currentValue;
+        }
     }
 }

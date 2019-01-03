@@ -40,8 +40,12 @@ namespace Ingresso.Api
 
             //Aplicando a injeção de dependências
             services.AddTransient<IFilmeService, FilmeService>();
+            services.AddTransient<ISalaService, SalaService>();
+            services.AddTransient<ISessaoService, SessaoService>();
 
             services.AddTransient<IFilmeRepository, FilmeRepository>();
+            services.AddTransient<ISalaRepository, SalaRepository>();
+            services.AddTransient<ISessaoRepository, SessaoRepository>();
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen(c =>
