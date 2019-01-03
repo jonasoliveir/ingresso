@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DTO;
+using Ingresso.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +13,73 @@ namespace Ingresso.Api.Controllers
     [ApiController]
     public class SessaoController : ControllerBase
     {
-        // GET: api/Sessao
+        private readonly ISessaoService sessaoService;
+
+        public SessaoController(ISessaoService sessaoService)
+        {
+            this.sessaoService = sessaoService;
+        }
+
+        // GET: api/sessao
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<SessaoDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            return sessaoService.GetAll();
         }
 
-        // GET: api/Sessao/5
+        // GET: api/sessao/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<SessaoDTO> Get(string id)
         {
-            return "value";
+            var sessao = sessaoService.GetSessaoById(id);
+
+            if (sessao == null)
+            {
+                return NotFound();
+            }
+
+            return sessao;
         }
 
-        // POST: api/Sessao
+        // POST: api/sessao
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<SessaoDTO> Post([FromBody] SessaoDTO sessao)
         {
+            var createdsessao = sessaoService.Create(sessao);
+
+            return CreatedAtRoute("Get", new { createdsessao.Id }, createdsessao);
         }
 
-        // PUT: api/Sessao/5
+        // PUT: api/sessao/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(string id, [FromBody] SessaoDTO sessaoToUpdate)
         {
+            var sessao = sessaoService.GetSessaoById(id);
+
+            if (sessao == null)
+            {
+                return NotFound();
+            }
+
+            sessaoService.Update(id, sessaoToUpdate);
+
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(string id)
         {
+            var sessao = sessaoService.GetSessaoById(id);
+
+            if (sessao == null)
+            {
+                return NotFound();
+            }
+
+            sessaoService.Remove(id);
+
+            return NoContent();
         }
     }
 }

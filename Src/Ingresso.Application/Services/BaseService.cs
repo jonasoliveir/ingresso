@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
 namespace Ingresso.Application.Services

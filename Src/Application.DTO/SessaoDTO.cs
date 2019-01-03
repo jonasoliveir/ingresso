@@ -7,5 +7,6 @@ namespace Application.DTO
         public DateTime Data { get; set; }
         public int QtLugar { get; set; }
         public decimal Valor { get; set; }
+        public string Id { get; set; }
     }
 }

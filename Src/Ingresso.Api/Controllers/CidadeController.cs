@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using Application.DTO;
+using Ingresso.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ingresso.Api.Controllers
@@ -11,36 +9,73 @@ namespace Ingresso.Api.Controllers
     [ApiController]
     public class CidadeController : ControllerBase
     {
-        // GET: api/Cidade
+        private readonly ICidadeService cidadeService;
+
+        public CidadeController(ICidadeService cidadeService)
+        {
+            this.cidadeService = cidadeService;
+        }
+
+        // GET: api/Filme
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<CidadeDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            return cidadeService.GetAll();
         }
 
-        // GET: api/Cidade/5
+        // GET: api/Filme/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<CidadeDTO> Get(string id)
         {
-            return "value";
+            var cidade = cidadeService.GetFilmeById(id);
+
+            if (cidade == null)
+            {
+                return NotFound();
+            }
+
+            return cidade;
         }
 
-        // POST: api/Cidade
+        // POST: api/Filme
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<CidadeDTO> Post([FromBody] CidadeDTO cidade)
         {
+            var createdCidade = cidadeService.Create(cidade);
+
+            return CreatedAtRoute("Get", new { createdCidade.Id }, createdCidade);
         }
 
-        // PUT: api/Cidade/5
+        // PUT: api/Filme/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(string id, [FromBody] CidadeDTO cidadeToUpdate)
         {
+            var cidade = cidadeService.GetFilmeById(id);
+
+            if (cidade == null)
+            {
+                return NotFound();
+            }
+
+            cidadeService.Update(id, cidadeToUpdate);
+
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(string id)
         {
+            var cidade = cidadeService.GetFilmeById(id);
+
+            if (cidade == null)
+            {
+                return NotFound();
+            }
+
+            cidadeService.Remove(id);
+
+            return NoContent();
         }
     }
 }
