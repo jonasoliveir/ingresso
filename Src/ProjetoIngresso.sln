@@ -23,11 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingresso.Domain", "Ingresso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingresso.Application", "Ingresso.Application\Ingresso.Application.csproj", "{74CA480F-9C77-4A76-8584-DF2A9B4F46B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingresso.Test", "Ingresso.Test\Ingresso.Test.csproj", "{E15AAE42-5016-484F-BA75-9BC9D9C680D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingresso.Application.Tests", "Ingresso.Test\Ingresso.Application.Tests.csproj", "{E15AAE42-5016-484F-BA75-9BC9D9C680D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ingresso.Api", "Ingresso.Api\Ingresso.Api.csproj", "{B5460115-375F-4E94-B731-DDF22D6DA2E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.DTO", "Application.DTO\Application.DTO.csproj", "{153C1227-59E5-4684-8290-0D0F62155855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.DTO", "Application.DTO\Application.DTO.csproj", "{153C1227-59E5-4684-8290-0D0F62155855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

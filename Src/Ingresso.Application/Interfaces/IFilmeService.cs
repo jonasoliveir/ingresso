@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Application.DTO;
 
 namespace Ingresso.Application.Interfaces
 {
     public interface IFilmeService
     {
-        IEnumerable<FilmeDTO> GetAll();
+        Task<IEnumerable<FilmeDTO>> GetAllAsync();
 
-        FilmeDTO GetFilmeById(string Id);
+        Task<FilmeDTO> GetFilmeByIdAsync(string Id);
 
-        FilmeDTO Create(FilmeDTO filmeDto);
+        Task<FilmeDTO> CreateAsync(FilmeDTO filmeDto);
 
-        void Update(string Id, FilmeDTO filmeDto);
+        Task<bool> UpdateAsync(string Id, FilmeDTO filmeDto);
 
-        void Remove(string Id);
+        Task<bool> RemoveAsync(string Id);
     }
 }

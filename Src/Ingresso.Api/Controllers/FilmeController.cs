@@ -6,6 +6,7 @@ namespace Ingresso.Api.Controllers
     using Ingresso.Application.Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     [Route("api/filmes")]
     [ApiController]
@@ -20,16 +21,16 @@ namespace Ingresso.Api.Controllers
 
         // GET: api/Filme
         [HttpGet]
-        public IEnumerable<FilmeDTO> Get()
+        public async Task<IEnumerable<FilmeDTO>> Get()
         {
-            return filmeService.GetAll();
+            return await filmeService.GetAllAsync().ConfigureAwait(false);
         }
 
         // GET: api/Filme/5
         [HttpGet("{id}", Name = "Get")]
-        public ActionResult<FilmeDTO> Get(string id)
+        public async Task<ActionResult<FilmeDTO>> Get(string id)
         {
-            var filme = filmeService.GetFilmeById(id);
+            var filme = await filmeService.GetFilmeByIdAsync(id);
 
             if (filme == null)
             {
@@ -41,41 +42,41 @@ namespace Ingresso.Api.Controllers
 
         // POST: api/Filme
         [HttpPost]
-        public ActionResult<FilmeDTO> Post([FromBody] FilmeDTO filme)
+        public async Task<ActionResult<FilmeDTO>> PostAsync([FromBody] FilmeDTO filme)
         {
-            var createdFilme = filmeService.Create(filme);
+            var createdFilme = await filmeService.CreateAsync(filme);
 
             return CreatedAtRoute("Get", new { createdFilme.Id }, createdFilme);
         }
 
         // PUT: api/Filme/5
         [HttpPut("{id}")]
-        public ActionResult Put(string id, [FromBody] FilmeDTO filmeToUpdate)
+        public async Task<ActionResult> PutAsync(string id, [FromBody] FilmeDTO filmeToUpdate)
         {
-            var filme = filmeService.GetFilmeById(id);
+            var filme = await filmeService.GetFilmeByIdAsync(id);
 
             if (filme == null)
             {
                 return NotFound();
             }
 
-            filmeService.Update(id, filmeToUpdate);
+            await filmeService.UpdateAsync(id, filmeToUpdate);
 
             return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> DeleteAsync(string id)
         {
-            var filme = filmeService.GetFilmeById(id);
+            var filme = await filmeService.GetFilmeByIdAsync(id);
 
             if (filme == null)
             {
                 return NotFound();
             }
 
-            filmeService.Remove(id);
+            await filmeService.RemoveAsync(id);
 
             return NoContent();
         }

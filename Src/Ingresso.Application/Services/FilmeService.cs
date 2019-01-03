@@ -3,59 +3,61 @@
     using global::Application.DTO;
     using Ingresso.Application.Extensions;
     using Ingresso.Application.Interfaces;
-    using Ingresso.Domain;
-    using Microsoft.Extensions.Configuration;
-    using MongoDB.Bson;
-    using MongoDB.Driver;
+    using Ingresso.Data.Interfaces;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public class FilmeService : BaseService, IFilmeService
+    public class FilmeService : IFilmeService
     {
-        private readonly IMongoCollection<Filme> filmeRepository;
+        private readonly IFilmeRepository filmeRepository;
 
-        public FilmeService(IConfiguration config) : base(config)
+        public FilmeService(IFilmeRepository filmeRepository)
         {
-            filmeRepository = base.DataBase.GetCollection<Filme>("Filmes");
+            this.filmeRepository = filmeRepository;
         }
 
-        public IEnumerable<FilmeDTO> GetAll()
+        public async Task<IEnumerable<FilmeDTO>> GetAllAsync()
         {
-            var result = filmeRepository.Find(filter => true).ToEnumerable();
+            var result = await filmeRepository.GetAllFilmesAsync().ConfigureAwait(false);
+
+            var mappedFilmes = new List<FilmeDTO>();
 
             foreach (var item in result)
             {
-                yield return item.MapToDto();
+                mappedFilmes.Add(item.MapToDto());
             }
+
+            return mappedFilmes;
         }
 
-        public FilmeDTO GetFilmeById(string Id)
+        public async Task<FilmeDTO> GetFilmeByIdAsync(string Id)
         {
-            var docId = new ObjectId(Id);
-
-            var result = filmeRepository.Find(f => f.Id == docId).FirstOrDefault();
+            var result = await filmeRepository.GetFilmeAsync(Id);
 
             return result.MapToDto();
         }
 
-        public FilmeDTO Create(FilmeDTO filmeDto)
+        public async Task<FilmeDTO> CreateAsync(FilmeDTO filmeDto)
         {
             var filme = filmeDto.MapToModel();
 
-            filmeRepository.InsertOne(filme);
+            await filmeRepository.AddFilmeAsync(filme);
 
             return filme.MapToDto();
         }
 
-        public void Update(string Id, FilmeDTO filmeDto)
+        public async Task<bool> UpdateAsync(string Id, FilmeDTO filmeDto)
         {
-            var filme = filmeDto.MapToModel(true);
+            var currentFilme = await filmeRepository.GetFilmeAsync(Id);
 
-            filmeRepository.ReplaceOne(f=> f.Id == filme.Id, filme);
+            currentFilme.MapToNewValues(filmeDto);
+
+            return await filmeRepository.UpdateFilmeAsync(Id, currentFilme);
         }
 
-        public void Remove(string Id)
+        public async Task<bool> RemoveAsync(string Id)
         {
-            filmeRepository.DeleteOne(f => f.Id == new ObjectId(Id));
+            return await filmeRepository.RemoveFilmeAsync(Id);
         }
     }
 }

@@ -3,6 +3,9 @@ namespace Ingresso.Api
 {
     using Ingresso.Application.Interfaces;
     using Ingresso.Application.Services;
+    using Ingresso.Data;
+    using Ingresso.Data.Interfaces;
+    using Ingresso.Data.Repositories;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -22,11 +25,23 @@ namespace Ingresso.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            //Aplicando a injeção de dependências
-            services.AddScoped<IFilmeService, FilmeService>();
+        {            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.Configure<MongoDbSettings>(options =>
+            {
+                options.ConnectionString
+                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database
+                    = Configuration.GetSection("MongoConnection:Database").Value;
+            });
+
+
+            //Aplicando a injeção de dependências
+            services.AddTransient<IFilmeService, FilmeService>();
+
+            services.AddTransient<IFilmeRepository, FilmeRepository>();
 
             // Inject an implementation of ISwaggerProvider with defaulted settings applied
             services.AddSwaggerGen(c =>

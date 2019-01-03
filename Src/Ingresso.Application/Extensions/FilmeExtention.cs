@@ -23,7 +23,7 @@
         }
 
 
-        public static Filme MapToModel(this FilmeDTO filme, bool setId = false)
+        public static Filme MapToModel(this FilmeDTO filme)
         {
             var f = new Filme
             {
@@ -31,13 +31,16 @@
                 FimEmCartaz = filme.FimEmCartaz,
                 InicioEmCartaz = filme.FimEmCartaz,
             };
-
-            if (setId)
-            {
-                f.Id = new ObjectId(filme.Id);
-            }
-
             return f;
+        }
+
+        public static Filme MapToNewValues(this Filme currentValue, FilmeDTO newValue)
+        {
+            currentValue.Nome = newValue.Nome;
+            currentValue.FimEmCartaz = newValue.FimEmCartaz;
+            currentValue.InicioEmCartaz = newValue.FimEmCartaz;
+
+            return currentValue;
         }
     }
 }
