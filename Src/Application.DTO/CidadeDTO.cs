@@ -6,7 +6,8 @@ namespace Application.DTO
 {
     public class CidadeDTO
     {
-        public string Cidade { get; set; }
+        public string Nome { get; set; }
         public string UF { get; set; }
+        public string Id { get; set; }
     }
 }

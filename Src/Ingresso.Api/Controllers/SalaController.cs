@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DTO;
+using Ingresso.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +13,73 @@ namespace Ingresso.Api.Controllers
     [ApiController]
     public class SalaController : ControllerBase
     {
-        // GET: api/Sala
+        private readonly ISalaService salaService;
+
+        public SalaController(ISalaService salaService)
+        {
+            this.salaService = salaService;
+        }
+
+        // GET: api/sala
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<SalaDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            return salaService.GetAll();
         }
 
-        // GET: api/Sala/5
+        // GET: api/sala/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public ActionResult<SalaDTO> Get(string id)
         {
-            return "value";
+            var sala = salaService.GetSalaById(id);
+
+            if (sala == null)
+            {
+                return NotFound();
+            }
+
+            return sala;
         }
 
-        // POST: api/Sala
+        // POST: api/sala
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<SalaDTO> Post([FromBody] SalaDTO sala)
         {
+            var createdsala = salaService.Create(sala);
+
+            return CreatedAtRoute("Get", new { createdsala.Id }, createdsala);
         }
 
-        // PUT: api/Sala/5
+        // PUT: api/sala/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(string id, [FromBody] SalaDTO salaToUpdate)
         {
+            var sala = salaService.GetSalaById(id);
+
+            if (sala == null)
+            {
+                return NotFound();
+            }
+
+            salaService.Update(id, salaToUpdate);
+
+            return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(string id)
         {
+            var sala = salaService.GetSalaById(id);
+
+            if (sala == null)
+            {
+                return NotFound();
+            }
+
+            salaService.Remove(id);
+
+            return NoContent();
         }
     }
 }
