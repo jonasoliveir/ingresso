@@ -62,7 +62,7 @@
             {
                 DeleteResult actionResult
                     = await _context.Filmes.DeleteOneAsync(
-                        Builders<Filme>.Filter.Eq("Id", id));
+                        Builders<Filme>.Filter.Eq("Id", GetInternalId(id)));
 
                 return actionResult.IsAcknowledged
                     && actionResult.DeletedCount > 0;
@@ -90,15 +90,7 @@
                 throw ex;
             }
         }
-
-        private ObjectId GetInternalId(string id)
-        {
-            ObjectId internalId;
-            if (!ObjectId.TryParse(id, out internalId))
-                internalId = ObjectId.Empty;
-
-            return internalId;
-        }
+               
 
     }
 }

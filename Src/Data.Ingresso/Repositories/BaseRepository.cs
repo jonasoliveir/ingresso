@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 
 namespace Ingresso.Data.Repositories
 {
@@ -11,6 +12,15 @@ namespace Ingresso.Data.Repositories
         {
             this.settings = settings;
             _context = new DbContext(settings);
+        }
+
+        protected ObjectId GetInternalId(string id)
+        {
+            ObjectId internalId;
+            if (!ObjectId.TryParse(id, out internalId))
+                internalId = ObjectId.Empty;
+
+            return internalId;
         }
     }
 }

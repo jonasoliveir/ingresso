@@ -5,11 +5,19 @@
 
     public class FilmeDTO
     {
-        public string Nome { get; set; }
+        public string Titulo { get; set; }
 
-        public DateTime InicioEmCartaz { get; set; }
+        public string Descricao { get; set; }
 
-        public DateTime FimEmCartaz { get; set; }
+        public DateTime Lancamento { get; set; }
+
+        public int QtDiasExibicao { get; set; }
+
+        public string Diretor { get; set; }
+
+        public string Genero { get; set; }
+
+        public List<AtorDto> Atores { get; set; }
 
         public List<SessaoDTO> Sessoes { get; set; }
 

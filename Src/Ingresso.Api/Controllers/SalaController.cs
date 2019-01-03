@@ -47,7 +47,7 @@ namespace Ingresso.Api.Controllers
         {
             var createdsala = await salaService.CreateAsync(sala);
 
-            return CreatedAtRoute("Get", new { createdsala.Id }, createdsala);
+            return CreatedAtRoute("GetSala", new { createdsala.Id }, createdsala);
         }
 
         // PUT: api/sala/5

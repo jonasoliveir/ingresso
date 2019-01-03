@@ -46,7 +46,7 @@ namespace Ingresso.Api.Controllers
         {
             var createdFilme = await filmeService.CreateAsync(filme);
 
-            return CreatedAtRoute("Get", new { createdFilme.Id }, createdFilme);
+            return CreatedAtRoute("GetFilme", new { createdFilme.Id }, createdFilme);
         }
 
         // PUT: api/Filme/5

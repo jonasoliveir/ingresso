@@ -47,7 +47,7 @@ namespace Ingresso.Api.Controllers
         {
             var createdsessao = await sessaoService.CreateAsync(sessao);
 
-            return CreatedAtRoute("Get", new { createdsessao.Id }, createdsessao);
+            return CreatedAtRoute("GetSessao", new { createdsessao.Id }, createdsessao);
         }
 
         // PUT: api/sessao/5

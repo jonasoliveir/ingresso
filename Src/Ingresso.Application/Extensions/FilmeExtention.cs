@@ -16,9 +16,12 @@
             return new FilmeDTO
             {
                 Id = filme.Id.ToString(),
-                Nome = filme.Nome,
-                FimEmCartaz = filme.FimEmCartaz,
-                InicioEmCartaz = filme.FimEmCartaz,
+                Titulo = filme.Titulo,
+                Lancamento = filme.Lancamento,
+                QtDiasExibicao = filme.QtDiasExibicao,
+                Descricao = filme.Descricao,
+                Genero = filme.Genero,
+                Diretor = filme.Diretor,
             };
         }
 
@@ -27,18 +30,24 @@
         {
             var f = new Filme
             {
-                Nome = filme.Nome,
-                FimEmCartaz = filme.FimEmCartaz,
-                InicioEmCartaz = filme.FimEmCartaz,
+                Titulo = filme.Titulo,
+                Lancamento = filme.Lancamento,
+                QtDiasExibicao = filme.QtDiasExibicao,
+                Descricao = filme.Descricao,
+                Genero = filme.Genero,
+                Diretor = filme.Diretor,
             };
             return f;
         }
 
         public static Filme MapToNewValues(this Filme currentValue, FilmeDTO newValue)
         {
-            currentValue.Nome = newValue.Nome;
-            currentValue.FimEmCartaz = newValue.FimEmCartaz;
-            currentValue.InicioEmCartaz = newValue.FimEmCartaz;
+            currentValue.Titulo = currentValue.Titulo;
+            currentValue.Lancamento = currentValue.Lancamento;
+            currentValue.QtDiasExibicao = currentValue.QtDiasExibicao;
+            currentValue.Descricao = currentValue.Descricao;
+            currentValue.Genero = currentValue.Genero;
+            currentValue.Diretor = currentValue.Diretor;
 
             return currentValue;
         }
