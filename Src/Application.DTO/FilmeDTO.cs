@@ -19,10 +19,6 @@
 
         public IEnumerable<AtorDto> Atores { get; set; }
 
-        public IEnumerable<SessaoDTO> Sessoes { get; set; }
-
-        public IEnumerable<SalaDTO> Salas { get; set; }
-
         public string Id { get; set; }
     }
 }
