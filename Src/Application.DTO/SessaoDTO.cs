@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Application.DTO
 {
@@ -13,5 +14,9 @@ namespace Application.DTO
         public string Id { get; set; }
 
         public string FilmeId { get; set; }
+
+        public string Legenda { get; set; }
+
+        public IEnumerable<HorarioDTO> Horarios { get; set; }
     }
 }

@@ -3,6 +3,7 @@
     using global::Application.DTO;
     using Ingresso.Domain;
     using MongoDB.Bson;
+    using System.Collections.Generic;
 
     public static class SessaoExtention
     {
@@ -20,9 +21,26 @@
                 QtLugar = sessao.QtLugar,
                 Valor = sessao.Valor,
                 FilmeId = sessao.FilmeId?.Id.ToString(),
+                Legenda = sessao.Legenda,
+                Horarios = MapHorariosToDto(sessao.Horarios),
             };
         }
 
+        private static IEnumerable<HorarioDTO> MapHorariosToDto(IEnumerable<Horario> horarios)
+        {
+            if (horarios == null)
+            {
+                yield break;
+            }
+
+            foreach (var item in horarios)
+            {
+                yield return new HorarioDTO
+                {
+                    Horario = item.Horarios, 
+                };
+            }
+        }
 
         public static Sessao MapToModel(this SessaoDTO sessao, bool setId = false)
         {
@@ -31,6 +49,8 @@
                 Data = sessao.Data,
                 QtLugar = sessao.QtLugar,
                 Valor = sessao.Valor,
+                Legenda = sessao.Legenda,
+                Horarios = MapHorariosToDto(sessao.Horarios),
             };
 
             if (setId)
@@ -46,7 +66,8 @@
             currentValue.Data = newValue.Data;
             currentValue.QtLugar = newValue.QtLugar;
             currentValue.Valor = newValue.Valor;
-
+            currentValue.Legenda = newValue.Legenda;
+            currentValue.Horarios = MapHorariosToDto(newValue.Horarios);
             return currentValue;
         }
     }

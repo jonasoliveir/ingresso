@@ -14,6 +14,8 @@
 
         [BsonElement("Cinema")]
         public string Cinema { get; set; }
-         
+
+        [BsonElement("Cidade")]
+        public string Cidade { get; set; }
     }
 }
