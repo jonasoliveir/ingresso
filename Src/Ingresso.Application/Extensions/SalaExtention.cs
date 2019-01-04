@@ -18,6 +18,7 @@
                 Id = sala.Id.ToString(),
                 Nome = sala.Nome,
                 Cinema = sala.Cinema,
+                Cidade = sala.Cidade,
             };
         }
 
@@ -27,7 +28,8 @@
             var f = new Sala
             {
                 Nome = sala.Nome,
-                Cinema = sala.Cinema
+                Cinema = sala.Cinema,
+                Cidade = sala.Cidade
             };
 
             if (setId)
@@ -42,6 +44,7 @@
         {
             currentValue.Nome = newValue.Nome;
             currentValue.Cinema = newValue.Cinema;
+            currentValue.Cidade = newValue.Cidade;
 
             return currentValue;
         }
