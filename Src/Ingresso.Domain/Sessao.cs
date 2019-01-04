@@ -21,6 +21,9 @@ namespace Ingresso.Domain
         [BsonElement("Valor")]
         public decimal Valor { get; set; }
 
+        [BsonElement("Legenda")]
+        public string Legenda { get; set; }
+
         public MongoDBRef FilmeId { get; set; }
 
         public MongoDBRef SalaId { get; set; }

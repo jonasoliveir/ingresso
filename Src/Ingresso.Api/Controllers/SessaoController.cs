@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.DTO;
+﻿using Application.DTO;
 using Ingresso.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ingresso.Api.Controllers
 {
@@ -94,6 +91,15 @@ namespace Ingresso.Api.Controllers
             if (sessao == null)
             {
                 return NotFound();
+            }
+
+            string message = "";
+
+            message = await CheckRequiredFields(sessao).ConfigureAwait(false);
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
             }
 
             await sessaoService.UpdateAsync(id, sessaoToUpdate);

@@ -2,7 +2,6 @@
 {
     using MongoDB.Bson;
     using MongoDB.Bson.Serialization.Attributes;
-    using System;
 
     public class Sala
     {
@@ -14,6 +13,9 @@
 
         [BsonElement("Cinema")]
         public string Cinema { get; set; }
-         
+
+        [BsonElement("Cidade")]
+        public string Cidade { get; set; }
+
     }
 }
