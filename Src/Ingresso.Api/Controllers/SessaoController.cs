@@ -17,10 +17,14 @@ namespace Ingresso.Api.Controllers
 
         private readonly IFilmeService filmeService;
 
-        public SessaoController(ISessaoService sessaoService, IFilmeService filmeService)
+        private readonly ISalaService salaService;
+
+
+        public SessaoController(ISessaoService sessaoService, IFilmeService filmeService, ISalaService salaService)
         {
             this.sessaoService = sessaoService;
             this.filmeService = filmeService;
+            this.salaService = salaService;
         }
 
         // GET: api/sessao
@@ -48,21 +52,37 @@ namespace Ingresso.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<SessaoDTO>> PostAsync([FromBody] SessaoDTO sessao)
         {
-            if (string.IsNullOrEmpty(sessao.FilmeId))
-            {
-                return BadRequest("O Identificar do filme deve ser informado.");
-            }
+            string message = "";
 
-            var filme = this.filmeService.GetFilmeByIdAsync(sessao.FilmeId);
+            message = await CheckRequiredFields(sessao).ConfigureAwait(false);
 
-            if (filme == null)
+            if (!string.IsNullOrEmpty(message))
             {
-                return BadRequest("O filme não existente.");
+                return BadRequest(message);
             }
 
             var createdsessao = await sessaoService.CreateAsync(sessao);
 
             return CreatedAtRoute("GetSessao", new { createdsessao.Id }, createdsessao);
+        }
+
+        private async Task<string> CheckRequiredFields(SessaoDTO sessao)
+        {
+            var filme = await this.filmeService.GetFilmeByIdAsync(sessao.FilmeId).ConfigureAwait(false);
+
+            if (filme == null)
+            {
+                return "O Identificador válido para o filme deverá ser informado.";
+            }
+
+            var sala = await this.salaService.GetSalaByIdAsync(sessao.SalaId).ConfigureAwait(false);
+
+            if (sala == null)
+            {
+                return "O identificador válido para a sala deverá ser informado.";
+            }
+
+            return string.Empty;
         }
 
         // PUT: api/sessao/5

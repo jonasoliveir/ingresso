@@ -23,10 +23,6 @@ namespace Ingresso.Domain
 
         public MongoDBRef FilmeId { get; set; }
 
-        public string Legenda { get; set; }
-
-        [BsonElement]
-        public IEnumerable<Horario> Horarios { get; set; }
-
+        public MongoDBRef SalaId { get; set; }
     }
 }
