@@ -22,5 +22,7 @@ namespace Ingresso.Domain
         public decimal Valor { get; set; }
 
         public MongoDBRef FilmeId { get; set; }
+
+        public MongoDBRef SalaId { get; set; }
     }
 }

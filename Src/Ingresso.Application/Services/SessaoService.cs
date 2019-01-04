@@ -4,9 +4,6 @@
     using Ingresso.Application.Extensions;
     using Ingresso.Application.Interfaces;
     using Ingresso.Data.Interfaces;
-    using Ingresso.Domain;
-    using Microsoft.Extensions.Configuration;
-    using MongoDB.Bson;
     using MongoDB.Driver;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -54,7 +51,11 @@
 
             var filme = await filmeRepository.GetFilmeAsync(SessaoDTO.FilmeId).ConfigureAwait(false);
 
+            var sala = await salaRepository.GetSalaAsync(SessaoDTO.SalaId).ConfigureAwait(false);
+
             sessao.FilmeId = new MongoDBRef("Filme", filme.Id);
+
+            sessao.SalaId = new MongoDBRef("Sala", sala.Id);
 
             await sessaoRepository.AddSessaoAsync(sessao);
 
@@ -66,6 +67,14 @@
             var currentSessao = await sessaoRepository.GetSessaoAsync(Id);
 
             currentSessao.MapToNewValues(SessaoDTO);
+
+            var filme = await filmeRepository.GetFilmeAsync(SessaoDTO.FilmeId).ConfigureAwait(false);
+
+            var sala = await salaRepository.GetSalaAsync(SessaoDTO.SalaId).ConfigureAwait(false);
+
+            currentSessao.FilmeId = new MongoDBRef("Filme", filme.Id);
+
+            currentSessao.SalaId = new MongoDBRef("Sala", sala.Id);
 
             return await sessaoRepository.UpdateSessaoAsync(Id, currentSessao);
         }

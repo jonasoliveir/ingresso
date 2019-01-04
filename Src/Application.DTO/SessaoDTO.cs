@@ -13,5 +13,7 @@ namespace Application.DTO
         public string Id { get; set; }
 
         public string FilmeId { get; set; }
+
+        public string SalaId { get; set; }
     }
 }

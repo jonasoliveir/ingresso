@@ -20,6 +20,7 @@
                 QtLugar = sessao.QtLugar,
                 Valor = sessao.Valor,
                 FilmeId = sessao.FilmeId?.Id.ToString(),
+                SalaId = sessao.SalaId?.Id.ToString(),
             };
         }
 
@@ -46,7 +47,6 @@
             currentValue.Data = newValue.Data;
             currentValue.QtLugar = newValue.QtLugar;
             currentValue.Valor = newValue.Valor;
-
             return currentValue;
         }
     }
